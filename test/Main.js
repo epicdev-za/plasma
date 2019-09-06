@@ -1,5 +1,5 @@
 const assert = require('assert');
-const PlasmaJs = require('../Plasmajs');
+const PlasmaJs = require('../PlasmaJs');
 const TestEntity = require('./Entities/TestEntity');
 
 describe('Basic Mocha String Test', function () {
@@ -14,11 +14,18 @@ describe('Basic Mocha String Test', function () {
         port: 5432,
     });
 
-    database.list(TestEntity);
+    let test = new TestEntity().initialise();
+    test.name = "dustin";
+    test.save((err,res)=>{
+        console.log(test.uid);
+        database.list(TestEntity);
 
-    database.query("select * from nodejs.test.clients", null, (err, res) => {
-        console.log(res);
+        PlasmaJs.getConnection.fetch(TestEntity, "select * from nodejs.test.clients", null, (err, res) => {
+            console.log(res);
+            database.closeConnection();
+        });
 
-        database.closeConnection();
+        test.delete();
     });
+
 });
