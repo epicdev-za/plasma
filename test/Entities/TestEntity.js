@@ -11,7 +11,7 @@ class TestEntity extends PlasmaEntity {
 
     static getPlasmaMapping(){
         return {
-            "_uid": {"field":"uid", "data_type":"VARCHAR", "data_length":255},
+            "_uuid": {"field":"uuid", "data_type":"VARCHAR", "data_length":255},
             "_name": {"field":"name", "data_type":"VARCHAR", "data_length":255},
             "_deleted": {"field":"deleted", "data_type":"BOOLEAN"}
         };
