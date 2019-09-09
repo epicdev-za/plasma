@@ -31,8 +31,10 @@ class PlasmaEntity {
         let object_values = Object.values(this);
         let parameters = [];
         let parameter_index = 1;
+        let obj = this;
         fields.forEach(function(field, index){
             if(field !== "plasma_meta") {
+                field = obj.constructor.fieldModifier(field);
                 parameters.push(object_values[index]);
                 if (PLASMA_MAPPING[field] !== undefined) {
                     field = PLASMA_MAPPING[field].field;
@@ -68,10 +70,11 @@ class PlasmaEntity {
         let fields_query = " ";
         let object_values = Object.values(this);
         let parameters = [];
-
+        let obj = this;
         let parameter_index = 1;
         fields.forEach(function(field, index){
             if(field !== "plasma_meta") {
+                field = obj.constructor.fieldModifier(field);
                 parameters.push(object_values[index]);
                 if (PLASMA_MAPPING[field] !== undefined) {
                     field = PLASMA_MAPPING[field].field;
@@ -131,6 +134,7 @@ class PlasmaEntity {
         let fields = Object.keys(this);
         let obj = this;
         fields.forEach(function(field, index){
+            field = obj.constructor.fieldModifier(field);
             if(field !== "plasma_meta"){
                 let field_final = field;
                 if(PLASMA_MAPPING[field] !== undefined){
@@ -153,8 +157,8 @@ class PlasmaEntity {
         return this;
     }
 
-    fieldModifier(object){
-        return object;
+    static fieldModifier(object){
+        return object.replace(/^_/, '');
     }
 
     static getEntity(){
