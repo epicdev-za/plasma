@@ -2,7 +2,7 @@
   "name": "plasma",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "PlasmaJs.js",
   "scripts": {
     "start": "node Plasmajs.js",
     "test": "mocha"
