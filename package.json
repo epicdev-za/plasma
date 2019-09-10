@@ -9,7 +9,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-3.0",
   "dependencies": {
     "pg": "^7.12.1",
     "uuid": "^3.3.3"
