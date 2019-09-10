@@ -13,12 +13,14 @@ class PlasmaJs{
         if(parameters !== undefined && parameters !== null && parameters.length > 0){
             this.pool.query(query, parameters, (err, res) => {
                 if(callback !== undefined){
+                	if (res === undefined) res = {};
                     callback(err, res);
                 }
             })
         }else{
             this.pool.query(query, (err, res) => {
                 if(callback !== undefined){
+                	if (res === undefined) res = {};
                     callback(err, res);
                 }
             })
