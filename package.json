@@ -1,5 +1,5 @@
 {
-  "name": "plasma.js",
+  "name": "plasma",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,7 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "pg": "^7.12.1"
+    "pg": "^7.12.1",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "mocha": "^6.2.0"
