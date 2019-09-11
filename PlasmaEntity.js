@@ -2,16 +2,23 @@ const PlasmaJs = require('./PlasmaJs');
 const uuidv4 = require('uuid/v4');
 
 class PlasmaEntity {
+
     constructor(){
         this._uuid = null;
-        this._deleted = false;
         this.plasma_meta ={};
+    }
+
+    clean(){
+        if(!this.uuid.match(/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/)){
+            throw new Error("Invalid UUID");
+        }
     }
 
     save(callback){
         if(this.plasma_meta.hasOwnProperty("readonly") && this.plasma_meta.readonly === true) {
             throw "Cannot save object it is readonly";
         }else{
+            this.clean();
             if (this.plasma_meta.hasOwnProperty("exists") && this.plasma_meta.exists === true) {
                 this.update(callback);
             } else {
@@ -100,11 +107,6 @@ class PlasmaEntity {
         });
     }
 
-    softDelete(callback){
-        this.deleted = true;
-        this.save(callback);
-    }
-
     delete(callback){
         const ENTITY = this.constructor.getEntity();
         PlasmaJs.getConnection.query("DELETE FROM " + ENTITY + " WHERE uuid = $1;", [this.uuid], (err,res)=>{
@@ -175,14 +177,6 @@ class PlasmaEntity {
 
     set uuid(value) {
         this._uuid = value;
-    }
-
-    get deleted() {
-        return this._deleted;
-    }
-
-    set deleted(value) {
-        this._deleted = value;
     }
 }
 module.exports = PlasmaEntity;
