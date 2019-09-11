@@ -16,6 +16,11 @@ class TestEntity extends PlasmaEntity {
         };
     }
 
+    clean() {
+        super.clean();
+        this.name = this.name.replace(/[^a-zA-Z0-9 ]/g, '');
+    }
+
     get name() {
         return this._name;
     }
