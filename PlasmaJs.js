@@ -1,5 +1,4 @@
-const { Pool, Client } = require('pg')
-
+const { Pool } = require('pg');
 
 class PlasmaJs{
 
@@ -13,14 +12,12 @@ class PlasmaJs{
         if(parameters !== undefined && parameters !== null && parameters.length > 0){
             this.pool.query(query, parameters, (err, res) => {
                 if(callback !== undefined){
-                	if (res === undefined) res = {};
                     callback(err, res);
                 }
             })
         }else{
             this.pool.query(query, (err, res) => {
                 if(callback !== undefined){
-                	if (res === undefined) res = {};
                     callback(err, res);
                 }
             })
@@ -30,7 +27,7 @@ class PlasmaJs{
     fetch(entity, query, parameters, callback){
         this.query(query, parameters, (err,res)=>{
             let objects = [];
-            if(res.rows !== undefined && res.rows.length > 0){
+            if(res !== undefined && res.rows !== undefined && res.rows.length > 0){
                 res.rows.forEach(function(object, index){
                     let tmp = new entity();
                     tmp.populateObject(object);
@@ -55,7 +52,7 @@ class PlasmaJs{
     fetchPartial(entity, query, parameters, callback){
         this.query(query, parameters, (err,res)=>{
             let objects = [];
-            if(res.rows !== undefined && res.rows.length > 0){
+            if(res !== undefined && res.rows !== undefined && res.rows.length > 0){
                 res.rows.forEach(function(object, index){
                     let tmp = new entity();
                     tmp.populateObject(object, true);
@@ -76,7 +73,7 @@ class PlasmaJs{
     exists(entity, uuid, callback){
         const query = "SELECT uuid FROM " + entity.getEntity() + " WHERE uuid = $1 LIMIT 1;";
         this.query(query, [uuid], (err, res)=>{
-            if(res.rows !== undefined && res.rows.length > 0){
+            if(res !== undefined && res.rows !== undefined && res.rows.length > 0){
                 callback(true);
             }else{
                 callback(false);
@@ -89,6 +86,12 @@ class PlasmaJs{
      * @param config
      */
     connect(config){
+        configIsset(config, 'user');
+        configIsset(config, 'host');
+        configIsset(config, 'database');
+        configIsset(config, 'password');
+        configIsset(config, 'port');
+
         this.config = config;
         let postgre_config = {
             user: config.user,
@@ -116,5 +119,12 @@ class PlasmaJs{
         this.connection = connection;
     }
 }
-
 module.exports = PlasmaJs;
+
+/* PRIVATE */
+
+function configIsset(object, key){
+    if(object[key] === undefined){
+        throw new Error("Missing required parameter '" + key + "'");
+    }
+}
