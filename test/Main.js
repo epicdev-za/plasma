@@ -3,7 +3,7 @@ const PlasmaJs = require('../PlasmaJs');
 const TestEntity = require('./Entities/TestEntity');
 const TestData = require("./Assets/data");
 
-describe('Basic Mocha String Test', function () {
+describe('Plasma database interaction tests', function () {
     console.log("Running tests");
     let database;
     before(function() {
