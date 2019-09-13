@@ -63,11 +63,9 @@ class PlasmaJs{
         });
     }
 
-    list(entity){
+    list(entity, callback){
         let query = "SELECT * FROM " + entity.getEntity();
-        this.query(query, [], (err,res)=>{
-
-        });
+        this.fetch(entity, query, [], callback);
     }
 
     exists(entity, uuid, callback){

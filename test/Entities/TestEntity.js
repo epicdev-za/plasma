@@ -3,6 +3,10 @@ class TestEntity extends PlasmaEntity {
     constructor(){
         super();
         this._name = null;
+        this._string_test= null;
+        this._int_test= null;
+        this._double_test= null;
+        this._deleted = false;
     }
 
     static getEntity(){
@@ -27,6 +31,38 @@ class TestEntity extends PlasmaEntity {
 
     set name(value) {
         this._name = value;
+    }
+
+    get string_test() {
+        return this._string_test;
+    }
+
+    set string_test(value) {
+        this._string_test = value;
+    }
+
+    get int_test() {
+        return this._int_test;
+    }
+
+    set int_test(value) {
+        this._int_test = value;
+    }
+
+    get double_test() {
+        return this._double_test;
+    }
+
+    set double_test(value) {
+        this._double_test = value;
+    }
+
+    get deleted() {
+        return this._deleted;
+    }
+
+    set deleted(value) {
+        this._deleted = value;
     }
 }
 

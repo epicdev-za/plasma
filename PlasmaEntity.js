@@ -127,6 +127,10 @@ class PlasmaEntity {
         });
     }
 
+    static list(callback){
+        PlasmaJs.getConnection.list(this, callback);
+    }
+
     static get(uuid, callback){
         PlasmaJs.getConnection.getByUUID(this, uuid, callback);
     }
