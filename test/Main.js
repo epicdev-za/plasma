@@ -19,12 +19,12 @@ describe('Basic Mocha String Test', function () {
 
     it('testing database read and write', function () {
         let tests = TestData.test_entity;
-        tests.forEach(function(field, index){
+        tests.forEach(function(obj, index){
             let test = new TestEntity().initialise();
-            test.name = field.name;
-            test.string_test = field.string_test;
-            test.int_test = field.int_test;
-            test.double_test = field.double_test;
+            test.name = obj.name;
+            test.string_test = obj.string_test;
+            test.int_test = obj.int_test;
+            test.double_test = obj.double_test;
 
             test.save((err,res)=>{
                 if(err !== undefined){
@@ -32,7 +32,14 @@ describe('Basic Mocha String Test', function () {
                 }
 
                 TestEntity.list((err,res)=>{
-                    assert.equal(res.rows.length, tests.length());
+                    assert.equal(res.length, tests.length());
+                    res.forEach(function(obj, index){
+                        let test_obj = tests[index];
+                        assert.equal(obj.name, test_obj.name, 'Testing read on name');
+                        assert.equal(obj.string_test, test_obj.string_test, 'Testing read on string_test');
+                        assert.equal(obj.int_test, test_obj.int_test, 'Testing read on int_test');
+                        assert.equal(obj.double_test, test_obj.double_test, 'Testing read on double_test');
+                    });
                 });
             });
         });
