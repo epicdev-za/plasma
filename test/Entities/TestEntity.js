@@ -10,14 +10,17 @@ class TestEntity extends PlasmaEntity {
     }
 
     static getEntity(){
-        return "test.clients";
+        return "test.tests";
     }
 
     static getPlasmaMapping(){
-        return {
-            "_name": {"field":"name", "data_type":"VARCHAR", "data_length":255},
-            "_deleted": {"field":"deleted", "data_type":"BOOLEAN"}
-        };
+        return {...super.getPlasmaMapping(), ...{
+                "_name": {"field":"name", "data_type":"VARCHAR", "data_length":255},
+                "_string_test": {"field":"string_test", "data_type":"VARCHAR", "data_length":255},
+                "_int_test": {"field":"int_test", "data_type":"INTEGER"},
+                "_double_test": {"field":"double_test", "data_type":"double precision"},
+                "_deleted": {"field":"deleted", "data_type":"BOOLEAN"}
+               }};
     }
 
     clean() {
