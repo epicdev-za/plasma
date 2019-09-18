@@ -156,9 +156,9 @@ class PlasmaEntity {
         });
     }
 
-    static count(include_deleted, callback){
+    static count(callback){
         const ENTITY = this.getEntity();
-        PlasmaJs.getConnection.query("SELECT count(uuid) as cnt FROM " + ENTITY + " WHERE deleted = false;", [], (err,res)=>{
+        PlasmaJs.getConnection.query("SELECT count(uuid) as cnt FROM " + ENTITY + ";", [], (err,res)=>{
             if(res.rows !== undefined && res.rows.length > 0){
                 callback(err, res.rows[0].cnt);
             }else{
