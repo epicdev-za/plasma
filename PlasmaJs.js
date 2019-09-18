@@ -39,7 +39,13 @@ class PlasmaJs{
     }
 
     getByUUID(entity, uuid, callback){
-        this.fetch(entity, "SELECT * FROM " + entity.getEntity() + " WHERE uuid = $1", [uuid], callback);
+        this.fetch(entity, "SELECT * FROM " + entity.getEntity() + " WHERE uuid = $1 LIMIT 1", [uuid], (err,res)=>{
+            let object = undefined;
+            if(res !== undefined && res.length > 0){
+                object = res[0];
+            }
+            callback(err, object);
+        });
     }
 
     /**
@@ -63,11 +69,9 @@ class PlasmaJs{
         });
     }
 
-    list(entity){
+    list(entity, callback){
         let query = "SELECT * FROM " + entity.getEntity();
-        this.query(query, [], (err,res)=>{
-
-        });
+        this.fetch(entity, query, [], callback);
     }
 
     exists(entity, uuid, callback){
