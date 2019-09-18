@@ -120,26 +120,3 @@ function savetests(tests, callback){
     });
 }
 
-function loadConfig() {
-    console.log(process.argv[1]);
-    console.log(process.argv[2]);
-    console.log(process.argv[3]);
-
-    let len = process.argv;
-    for(let i= 2; i < len; i++){
-        let arg = process.argv[i];
-        console.log(arg);
-        // if(arg.includes("u=")){
-        //     config.user= arg.replace("u=", "");
-        // }else if(arg.includes("h=")){
-        //     config.host= arg.replace("h=", "");
-        // }else if(arg.includes("d=")){
-        //     config.database= arg.replace("d=", "");
-        // }else if(arg.includes("pw=")){
-        //     config.password= arg.replace("pw=", "");
-        // }else if(arg.includes("p=")){
-        //     config.port= arg.replace("p=", "");
-        // }
-    }
-}
-
