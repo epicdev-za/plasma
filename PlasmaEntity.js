@@ -20,9 +20,9 @@ class PlasmaEntity {
         }else{
             this.clean();
             if (this.plasma_meta.hasOwnProperty("exists") && this.plasma_meta.exists === true) {
-                this.update(callback);
+                return this.update(callback);
             } else {
-                this.insert(callback);
+                return this.insert(callback);
             }
         }
     }
@@ -58,14 +58,29 @@ class PlasmaEntity {
         });
 
         query += fields_query + ")" + values_query + ");";
-        PlasmaJs.getConnection.query(query, parameters, (err,res)=>{
-            let plasma_meta = this.plasma_meta;
-            plasma_meta.exists = true;
-            this.plasma_meta = plasma_meta;
-            if(callback !== undefined){
-                callback(err, res);
-            }
-        });
+
+        let _this = this;
+        if(callback === undefined){
+            return new Promise((resolve, reject) => {
+                PlasmaJs.getConnection.query(query, parameters).then((res) => {
+                    let plasma_meta = _this.plasma_meta;
+                    plasma_meta.exists = true;
+                    _this.plasma_meta = plasma_meta;
+                    resolve(res);
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        }else{
+            PlasmaJs.getConnection.query(query, parameters, (err,res)=>{
+                let plasma_meta = this.plasma_meta;
+                plasma_meta.exists = true;
+                this.plasma_meta = plasma_meta;
+                if(callback !== undefined){
+                    callback(err, res);
+                }
+            });
+        }
     }
 
     update(callback){
@@ -97,14 +112,29 @@ class PlasmaEntity {
 
         query += fields_query + " WHERE uuid = $" + parameter_index;
         parameters.push(this.uuid);
-        PlasmaJs.getConnection.query(query, parameters, (err,res)=>{
-            let plasma_meta = this.plasma_meta;
-            plasma_meta.exists = true;
-            this.plasma_meta = plasma_meta;
-            if(callback !== undefined){
-                callback(err, res);
-            }
-        });
+
+        let _this = this;
+        if(callback === undefined){
+            return new Promise((resolve, reject) => {
+                PlasmaJs.getConnection.query(query, parameters).then((res) => {
+                    let plasma_meta = _this.plasma_meta;
+                    plasma_meta.exists = true;
+                    _this.plasma_meta = plasma_meta;
+                    resolve(res);
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        }else{
+            PlasmaJs.getConnection.query(query, parameters, (err,res)=>{
+                let plasma_meta = this.plasma_meta;
+                plasma_meta.exists = true;
+                this.plasma_meta = plasma_meta;
+                if(callback !== undefined){
+                    callback(err, res);
+                }
+            });
+        }
     }
 
     static initialiseTable(callback){
@@ -149,30 +179,54 @@ class PlasmaEntity {
 
     delete(callback){
         const ENTITY = this.constructor.getEntity();
-        PlasmaJs.getConnection.query("DELETE FROM " + ENTITY + " WHERE uuid = $1;", [this.uuid], (err,res)=>{
-            if(callback !== undefined){
-                callback(err, res);
-            }
-        });
+        if(callback === undefined){
+            return new Promise((resolve, reject) => {
+                PlasmaJs.getConnection.query("DELETE FROM " + ENTITY + " WHERE uuid = $1;", [this.uuid]).then((res) => {
+                    resolve(res);
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        }else{
+            PlasmaJs.getConnection.query("DELETE FROM " + ENTITY + " WHERE uuid = $1;", [this.uuid], (err,res)=>{
+                if(callback !== undefined){
+                    callback(err, res);
+                }
+            });
+        }
     }
 
     static count(callback){
         const ENTITY = this.getEntity();
-        PlasmaJs.getConnection.query("SELECT count(uuid) as cnt FROM " + ENTITY + ";", [], (err,res)=>{
-            if(res.rows !== undefined && res.rows.length > 0){
-                callback(err, res.rows[0].cnt);
-            }else{
-                callback(err, 0);
-            }
-        });
+        if(callback === undefined){
+            return new Promise((resolve, reject) => {
+                PlasmaJs.getConnection.query("SELECT count(uuid) as cnt FROM " + ENTITY + ";", []).then((res) => {
+                    if(res.rows !== undefined && res.rows.length > 0){
+                        resolve(res.rows[0].cnt);
+                    }else{
+                        resolve(0);
+                    }
+                }).catch((err) => {
+                    reject(err);
+                });
+            });
+        }else{
+            PlasmaJs.getConnection.query("SELECT count(uuid) as cnt FROM " + ENTITY + ";", [], (err,res)=>{
+                if(res.rows !== undefined && res.rows.length > 0){
+                    callback(err, res.rows[0].cnt);
+                }else{
+                    callback(err, 0);
+                }
+            });
+        }
     }
 
     static list(callback){
-        PlasmaJs.getConnection.list(this, callback);
+        return PlasmaJs.getConnection.list(this, callback);
     }
 
     static get(uuid, callback){
-        PlasmaJs.getConnection.getByUUID(this, uuid, callback);
+        return PlasmaJs.getConnection.getByUUID(this, uuid, callback);
     }
 
     populateObject(object, readonly){
