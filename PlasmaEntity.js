@@ -86,7 +86,7 @@ class PlasmaEntity {
                 if (PLASMA_MAPPING[field] !== undefined) {
                     field = PLASMA_MAPPING[field].field;
                 }
-                if (index === 1) {
+                if (parameter_index === 1) {
                     fields_query += field + " = $" + parameter_index;
                 } else {
                     fields_query += ", " + field + " = $" + parameter_index;
@@ -95,7 +95,7 @@ class PlasmaEntity {
             }
         });
 
-        query += fields_query + " WHERE uuid like $" + parameter_index;
+        query += fields_query + " WHERE uuid = $" + parameter_index;
         parameters.push(this.uuid);
         PlasmaJs.getConnection.query(query, parameters, (err,res)=>{
             let plasma_meta = this.plasma_meta;
