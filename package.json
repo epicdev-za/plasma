@@ -12,7 +12,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "npm": "^6.11.3",
-    "pg": "^7.12.1",
+    "pg": "^8.4.1",
     "uuid": "^3.3.3"
   },
   "devDependencies": {
