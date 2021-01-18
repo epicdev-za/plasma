@@ -178,6 +178,7 @@ class PlasmaJs{
         configIsset(config, 'database');
         configIsset(config, 'password');
         configIsset(config, 'port');
+        configIsset(config, 'schema');
 
         this.config = config;
         let postgre_config = {
@@ -196,6 +197,10 @@ class PlasmaJs{
      */
     closeConnection(){
         this.pool.end();
+    }
+
+    static get getSchema(){
+        return this.config.schema;
     }
 
     static get getConnection(){
