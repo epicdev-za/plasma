@@ -190,6 +190,7 @@ class PlasmaJs{
         };
         this.pool = new Pool(postgre_config);
         PlasmaJs.setConnection = this;
+        PlasmaJs.setSchema = this.config.schema;
     }
 
     /**
@@ -200,7 +201,7 @@ class PlasmaJs{
     }
 
     static get getSchema(){
-        return this.config.schema;
+        return this.schema;
     }
 
     static get getConnection(){
@@ -209,6 +210,10 @@ class PlasmaJs{
 
     static set setConnection(connection){
         this.connection = connection;
+    }
+
+    static set setSchema(schema){
+        this.schema = schema;
     }
 }
 module.exports = PlasmaJs;
