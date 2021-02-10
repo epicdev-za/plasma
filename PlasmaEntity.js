@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 class PlasmaEntity {
 
     constructor(){
-        this._uuid = uuidv4();
+        this._uuid = null;
         this.plasma_meta ={};
     }
 
@@ -282,9 +282,7 @@ class PlasmaEntity {
     }
 
     initialise(){
-        if(this.uuid === undefined || this.uuid === null) {
-            this.uuid = uuidv4();
-        }
+        this.uuid = uuidv4();
         return this;
     }
 
