@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 class PlasmaEntity {
 
     constructor(){
-        this._uuid = null;
+        this._uuid = uuidv4();
         this.plasma_meta ={};
     }
 
@@ -229,6 +229,35 @@ class PlasmaEntity {
         return PlasmaJs.getConnection.getByUUID(this, uuid, callback);
     }
 
+    static fetch(query, parameters, callback){
+        return PlasmaJs.getConnection.fetch(this, query, parameters, callback);
+    }
+
+    static fetchOne(query, parameters, callback){
+        let _this = this;
+        if(callback === undefined){
+            return new Promise((resolve, reject) => {
+                PlasmaJs.getConnection.fetch(_this, query, parameters).then((res) => {
+                    if(res.length > 0){
+                        resolve(res[0]);
+                    }else{
+                        resolve(null);
+                    }
+                }).catch(reject);
+            });
+        }else{
+            PlasmaJs.getConnection.fetch(_this, query, parameters).then((res) => {
+                if(res.length > 0){
+                    callback(false, res[0]);
+                }else{
+                    callback(false, null);
+                }
+            }).catch((err) => {
+                callback(err);
+            });
+        }
+    }
+
     populateObject(object, readonly){
         const PLASMA_MAPPING = this.constructor.getPlasmaMapping();
         let fields = Object.keys(this);
@@ -253,7 +282,9 @@ class PlasmaEntity {
     }
 
     initialise(){
-        this.uuid = uuidv4();
+        if(this.uuid === undefined || this.uuid === null) {
+            this.uuid = uuidv4();
+        }
         return this;
     }
 
