@@ -138,43 +138,67 @@ class PlasmaEntity {
     }
 
     static initialiseTable(callback){
-        const ENTITY = this.getEntity();
-        const PLASMA_MAPPING = this.getPlasmaMapping();
-        let query = "CREATE TABLE " + ENTITY + " (";
-        let primary_keys = [];
-        Object.keys(PLASMA_MAPPING).forEach(function(key) {
-            let obj_map= PLASMA_MAPPING[key];
+        let internal_function = function (internal_callback){
+            const ENTITY = this.getEntity();
+            const PLASMA_MAPPING = this.getPlasmaMapping();
+            let query = "CREATE TABLE " + ENTITY + " (";
+            let primary_keys = [];
+            Object.keys(PLASMA_MAPPING).forEach(function(key) {
+                let obj_map= PLASMA_MAPPING[key];
 
-            let field = obj_map.field;
-            let data_type = obj_map.data_type;
-            let data_length = obj_map.data_length;
+                let field = obj_map.field;
+                let data_type = obj_map.data_type;
+                let data_length = obj_map.data_length;
 
-            if(obj_map.primary_key !== undefined){
-                primary_keys.push(field);
-            }
+                if(obj_map.primary_key !== undefined){
+                    primary_keys.push(field);
+                }
 
-            let entry = field + " " +data_type;
-            if(data_length !== undefined){
-                entry+="("+data_length+")";
-            }
-            entry+=",";
-            query+=entry;
-        });
-        let primary_key_entry = "PRIMARY KEY (";
-        primary_keys.forEach(function(field, index){
-            if (index === 0) {
-                primary_key_entry += field;
-            } else {
-                primary_key_entry += ", " + field;
-            }
-        });
-        primary_key_entry+=")";
-        query+=primary_key_entry + ");";
-        PlasmaJs.getConnection.query(query, [], (err,res)=>{
-            if(callback !== undefined){
-                callback(err, res);
-            }
-        });
+                let entry = field + " " +data_type;
+                if(data_length !== undefined){
+                    entry+="("+data_length+")";
+                }
+                entry+=",";
+                query+=entry;
+            });
+            let primary_key_entry = "PRIMARY KEY (";
+            primary_keys.forEach(function(field, index){
+                if (index === 0) {
+                    primary_key_entry += field;
+                } else {
+                    primary_key_entry += ", " + field;
+                }
+            });
+            primary_key_entry+=")";
+            query+=primary_key_entry + ");";
+            PlasmaJs.getConnection.query(query, [], (err,res)=>{
+                internal_callback(err, res);
+            });
+        }
+
+        if(callback !== undefined){
+            internal_function(callback);
+        }else{
+            return new Promise((resolve, reject) => {
+                internal_function((err, res) => {
+                    if(err){
+                        reject(err);
+                    }else{
+                        resolve(res);
+                    }
+                });
+            });
+        }
+    }
+
+    static async tableExists(){
+        let schema_mapping = this.getEntity().split(".");
+        if(schema_mapping.length === 2){
+            let res = await PlasmaJs.getConnection.query("SELECT * FROM pg_tables WHERE schemaname = $1 AND tablename = $2", schema_mapping);
+            return (res.length === 1);
+        }else{
+            throw new Error("Invalid schema mapping");
+        }
     }
 
     delete(callback){
