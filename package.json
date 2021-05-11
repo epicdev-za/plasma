@@ -1,5 +1,5 @@
 {
-  "name": "plasma",
+  "name": "@epicdev/plasma",
   "version": "1.0.1",
   "description": "",
   "main": "PlasmaJs.js",
