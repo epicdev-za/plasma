@@ -191,6 +191,8 @@ class PlasmaJs{
         this.pool = new Pool(postgre_config);
         PlasmaJs.setConnection = this;
         PlasmaJs.setSchema = this.config.schema;
+
+        return this.pool.connect();
     }
 
     /**
