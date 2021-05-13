@@ -40,7 +40,7 @@ class PlasmaEntity {
         let parameter_index = 1;
         let obj = this;
         fields.forEach(function(field, index){
-            if(field !== "plasma_meta") {
+            if(field !== "plasma_meta" && object_values[index] !== undefined) {
                 field = obj.constructor.fieldModifier(field);
                 parameters.push(object_values[index]);
                 if (PLASMA_MAPPING[field] !== undefined) {
