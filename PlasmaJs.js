@@ -9,16 +9,26 @@ class PlasmaJs{
      * @param callback
      */
     query(query, parameters, callback){
+        const currentStack = new Error();
+
         let _this = this;
         let internal_query = function(query, parameters, callback){
             if(parameters !== undefined && parameters !== null && parameters.length > 0){
                 _this.pool.query(query, parameters, (err, res) => {
+                    if(err){
+                        console.error(query);
+                        console.error(currentStack.stack);
+                    }
                     if(callback !== undefined){
                         callback(err, res);
                     }
                 })
             }else{
                 _this.pool.query(query, (err, res) => {
+                    if(err){
+                        console.error(query);
+                        console.error(currentStack.stack);
+                    }
                     if(callback !== undefined){
                         callback(err, res);
                     }
