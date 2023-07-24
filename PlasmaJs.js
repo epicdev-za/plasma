@@ -1,4 +1,5 @@
-const { Pool } = require('pg');
+import pkg from 'pg';
+const { Pool } = pkg;
 
 class PlasmaJs{
 
@@ -228,7 +229,7 @@ class PlasmaJs{
         this.schema = schema;
     }
 }
-module.exports = PlasmaJs;
+export default PlasmaJs;
 
 /* PRIVATE */
 

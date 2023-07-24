@@ -1,4 +1,4 @@
-const PlasmaEntity = require('../../PlasmaEntity');
+import PlasmaEntity from '../../PlasmaEntity';
 class TestEntity extends PlasmaEntity {
     constructor(){
         super();
@@ -69,4 +69,4 @@ class TestEntity extends PlasmaEntity {
     }
 }
 
-module.exports = TestEntity;
+export default TestEntity;

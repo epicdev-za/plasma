@@ -62,4 +62,4 @@ class Criteria {
         });
     }
 }
-module.exports = Criteria;
+export default Criteria;

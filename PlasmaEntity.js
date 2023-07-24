@@ -1,5 +1,5 @@
-const PlasmaJs = require('./PlasmaJs');
-const uuidv4 = require('uuid/v4');
+import PlasmaJs from './PlasmaJs.js';
+import { v4 as uuidv4 } from 'uuid';
 
 class PlasmaEntity {
 
@@ -367,4 +367,4 @@ class PlasmaEntity {
         this._uuid = value;
     }
 }
-module.exports = PlasmaEntity;
+export default PlasmaEntity;

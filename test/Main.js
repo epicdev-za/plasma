@@ -1,15 +1,15 @@
-const assert = require('assert');
-const PlasmaJs = require('../PlasmaJs');
-const TestEntity = require('./Entities/TestEntity');
-const TestData = require("./Assets/data");
+import assert from 'assert';
+import PlasmaJs from '../PlasmaJs.js';
+import TestEntity from './Entities/TestEntity.js';
+const TestData = require("./Assets/data.json");
 let test_confirm = {};
 let test_count;
 let config = {
-    user: process.env.username,
-    host: process.env.host,
-    database: process.env.database,
-    port: process.env.port,
-    password: process.env.password,
+    user: '',
+    host: '',
+    database: 'test',
+    port: 5432,
+    password: '',
 };
 
 describe('Plasma database interaction tests', function () {
